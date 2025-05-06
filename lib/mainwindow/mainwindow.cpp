@@ -1,5 +1,6 @@
 #include "mainwindow.hpp"
 #include <qmessagebox.h>
+#include <qscrollarea.h>
 
 #include "ui_mainwindow.h"
 
@@ -8,7 +9,7 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
-      m_editor(nullptr, &m_model),
+      m_editor(nullptr),
       m_canvas_panel(nullptr, &m_model),
       m_fp(&m_model),
       m_ui(new Ui::MainWindow) {
@@ -37,7 +38,6 @@ void MainWindow::connectSlots() {
 
 void MainWindow::open() {
     m_fp.open();
-    m_editor.open_spline();
 }
 
 void MainWindow::save() {
@@ -54,7 +54,6 @@ MainWindow::~MainWindow() {
 
 void MainWindow::open_file() {
     m_fp.read_file("assets/default.bin");
-    m_editor.open_spline();
 }
 
 void MainWindow::show_about() {

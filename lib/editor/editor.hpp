@@ -1,45 +1,43 @@
 #pragma once
 
+#include <qboxlayout.h>
 #include <qgraphicsitem.h>
 #include <qgraphicsscene.h>
 #include <QActionGroup>
+#include <QPlainTextEdit>
 #include <QWidget>
-#include "model.hpp"
-#include "point_item.hpp"
-#include "scalable_graphics_view.hpp"
 
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class Editor;
-}
-QT_END_NAMESPACE
+#include "highlighter.hpp"
 
 class Editor : public QWidget {
     Q_OBJECT
    private:
-    Ui::Editor* m_ui;
-    ScalableGraphicsView m_view;
-    DataModel* m_data;
+    QPlainTextEdit m_text_edit;
+    SyntaxHighlighter m_highlighter;
 
-    QGraphicsScene m_scene;
-    QList<PointItem*> m_points;
-    QList<QGraphicsItem*> m_spline_segments;
-    QList<QGraphicsItem*> m_spline;
-
-    void setup_axes();
-    void k_updated();
+    QHBoxLayout m_layout;
 
    public:
-    explicit Editor(QWidget* parent, DataModel* model);
-    ~Editor() override;
-    bool eventFilter(QObject* obj, QEvent* event) override;
+    explicit Editor(QWidget* parent = nullptr);
 
-    void open_spline();
+    void line_number_area_paint_event(QPaintEvent* event);
+    int line_number_area_width();
+};
 
-   private slots:
-    void addPoint(const QPointF& pos, bool update_spline = false);
-    void updateSpline();
-    void handlePointDeleted(PointItem* point);
-    void apply();
-    void normalize();
+class LineNumberArea : public QWidget {
+   public:
+    explicit LineNumberArea(Editor* editor)
+        : QWidget(editor), m_editor(editor) {}
+
+    QSize sizeHint() const override {
+        return QSize(m_editor->line_number_area_width(), 0);
+    }
+
+   protected:
+    void paintEvent(QPaintEvent* event) override {
+        m_editor->line_number_area_paint_event(event);
+    }
+
+   private:
+    Editor* m_editor;
 };

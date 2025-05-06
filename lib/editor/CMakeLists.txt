@@ -6,6 +6,8 @@ qt_add_library(
   editor.ui
   point_item.hpp
   point_item.cpp
+  highlighter.hpp
+  highlighter.cpp
   scalable_graphics_view.hpp
   scalable_graphics_view.cpp)
 
