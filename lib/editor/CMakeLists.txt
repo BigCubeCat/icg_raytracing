@@ -8,6 +8,8 @@ qt_add_library(
   point_item.cpp
   highlighter.hpp
   highlighter.cpp
+  code.hpp
+  code.cpp
   scalable_graphics_view.hpp
   scalable_graphics_view.cpp)
 
