@@ -1,5 +1,6 @@
 #pragma once
 
+#include <qboxlayout.h>
 #include <qgraphicsitem.h>
 #include <qgraphicsscene.h>
 #include <QActionGroup>
@@ -15,6 +16,7 @@ class Editor : public QWidget {
     explicit Editor(QWidget* parent = nullptr);
 
    private:
-    CodeEditor* textEdit;
-    SyntaxHighlighter* highlighter;
+    std::shared_ptr<CodeEditor> m_text_edit;
+    std::shared_ptr<SyntaxHighlighter> m_highlighter;
+    QVBoxLayout m_layout;
 };

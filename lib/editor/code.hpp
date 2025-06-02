@@ -16,6 +16,9 @@ class CodeEditor : public QPlainTextEdit {
     void lineNumberAreaPaintEvent(QPaintEvent* event);
     int lineNumberAreaWidth();
 
+   private:
+    std::unique_ptr<QWidget> m_line_number_area;
+
    protected:
     void resizeEvent(QResizeEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
@@ -24,25 +27,22 @@ class CodeEditor : public QPlainTextEdit {
     void updateLineNumberAreaWidth();
     void highlightCurrentLine();
     void updateLineNumberArea(const QRect& rect, int dy);
-
-   private:
-    QWidget* lineNumberArea;
 };
 
 class LineNumberArea : public QWidget {
    public:
     explicit LineNumberArea(CodeEditor* editor)
-        : QWidget(editor), codeEditor(editor) {}
+        : QWidget(editor), m_code_editor(editor) {}
 
     QSize sizeHint() const override {
-        return QSize(codeEditor->lineNumberAreaWidth(), 0);
+        return QSize(m_code_editor->lineNumberAreaWidth(), 0);
     }
 
    protected:
     void paintEvent(QPaintEvent* event) override {
-        codeEditor->lineNumberAreaPaintEvent(event);
+        m_code_editor->lineNumberAreaPaintEvent(event);
     }
 
    private:
-    CodeEditor* codeEditor;
+    CodeEditor* m_code_editor;
 };

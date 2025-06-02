@@ -3,14 +3,12 @@
 #include "code.hpp"
 
 Editor::Editor(QWidget* parent) : QWidget(parent) {
-    textEdit = new CodeEditor(this);
-    highlighter = new SyntaxHighlighter(textEdit->document());
-
-    QVBoxLayout* layout = new QVBoxLayout;
-    layout->addWidget(textEdit);
-    setLayout(layout);
-
-    textEdit->setStyleSheet(R"(
+    m_text_edit = std::make_shared<CodeEditor>(this);
+    m_highlighter =
+        std::make_shared<SyntaxHighlighter>(m_text_edit->document());
+    m_layout.addWidget(m_text_edit.get());
+    setLayout(&m_layout);
+    m_text_edit->setStyleSheet(R"(
         CodeEditor {
             font-family: Consolas;
             font-size: 12pt;

@@ -1,7 +1,7 @@
 #include "code.hpp"
 
 CodeEditor::CodeEditor(QWidget* parent) : QPlainTextEdit(parent) {
-    lineNumberArea = new LineNumberArea(this);
+    m_line_number_area = std::unique_ptr<QWidget>(new LineNumberArea(this));
 
     connect(this, &CodeEditor::blockCountChanged, this,
             &CodeEditor::updateLineNumberAreaWidth);
@@ -29,11 +29,12 @@ void CodeEditor::updateLineNumberAreaWidth() {
 }
 
 void CodeEditor::updateLineNumberArea(const QRect& rect, int dy) {
-    if (dy)
-        lineNumberArea->scroll(0, dy);
-    else
-        lineNumberArea->update(0, rect.y(), lineNumberArea->width(),
-                               rect.height());
+    if (dy) {
+        m_line_number_area->scroll(0, dy);
+    } else {
+        m_line_number_area->update(0, rect.y(), m_line_number_area->width(),
+                                   rect.height());
+    }
 
     if (rect.contains(viewport()->rect()))
         updateLineNumberAreaWidth();
@@ -42,12 +43,12 @@ void CodeEditor::updateLineNumberArea(const QRect& rect, int dy) {
 void CodeEditor::resizeEvent(QResizeEvent* event) {
     QPlainTextEdit::resizeEvent(event);
     QRect cr = contentsRect();
-    lineNumberArea->setGeometry(
+    m_line_number_area->setGeometry(
         QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
 }
 
 void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent* event) {
-    QPainter painter(lineNumberArea);
+    QPainter painter(m_line_number_area.get());
     painter.fillRect(event->rect(), QColor(240, 240, 240));
 
     QTextBlock block = firstVisibleBlock();
@@ -60,7 +61,7 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent* event) {
         if (block.isVisible() && bottom >= event->rect().top()) {
             QString number = QString::number(block_number + 1);
             painter.setPen(QColor(100, 100, 100));
-            painter.drawText(0, top, lineNumberArea->width() - 3,
+            painter.drawText(0, top, m_line_number_area->width() - 3,
                              fontMetrics().height(), Qt::AlignRight, number);
         }
 
