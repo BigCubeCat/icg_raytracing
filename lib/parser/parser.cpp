@@ -13,13 +13,13 @@ bool Parser::is_valid() const {
     return m_valid;
 }
 
-std::vector<std::unique_ptr<HittableIface<float>>> Parser::operator()() {
+std::vector<std::shared_ptr<HittableIface<float>>> Parser::operator()() {
     if (!m_valid) {
         return {};
     }
     std::stringstream stream(m_text);
     auto objects = parse(stream);
-    std::vector<std::unique_ptr<hittable>> result;
+    std::vector<std::shared_ptr<hittable>> result;
     result.reserve(objects.size());
     HittableObjectVisitor visitor;
     for (const auto& object : objects) {

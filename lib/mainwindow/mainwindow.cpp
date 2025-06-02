@@ -9,7 +9,7 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
-      m_editor(nullptr),
+      m_editor(&m_model, nullptr),
       m_canvas_panel(nullptr, &m_model),
       m_fp(&m_model),
       m_ui(new Ui::MainWindow) {

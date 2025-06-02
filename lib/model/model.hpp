@@ -9,7 +9,7 @@
 class DataModel : public QObject {
     Q_OBJECT
    public:
-    std::vector<HittableIface<float>> m_objects;
+    std::vector<std::shared_ptr<HittableIface<float>>> m_objects;
     double m_zn;
 
     double m_rot_x;
@@ -18,4 +18,11 @@ class DataModel : public QObject {
     QColor m_far;
 
     explicit DataModel(QObject* parent = nullptr) : QObject(parent) {}
+
+    std::vector<std::shared_ptr<HittableIface<float>>> objects() const {
+        return m_objects;
+    }
+
+    void set_objects(
+        std::vector<std::shared_ptr<HittableIface<float>>>&& objects);
 };

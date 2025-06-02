@@ -1,9 +1,12 @@
 #include "editor.hpp"
 #include <qboxlayout.h>
+#include <QDebug>
 #include <memory>
 #include "code.hpp"
+#include "model.hpp"
 
-Editor::Editor(QWidget* parent) : QWidget(parent) {
+Editor::Editor(DataModel* data, QWidget* parent)
+    : QWidget(parent), m_data(data) {
     m_text_edit = std::make_shared<CodeEditor>(this);
     m_highlighter =
         std::make_shared<SyntaxHighlighter>(m_text_edit->document());
@@ -31,5 +34,9 @@ void Editor::set_text(const QString& code) {
 void Editor::apply() {
     std::string text = m_text_edit->toPlainText().toStdString();
     m_parser.set_text(text);
-    if (m_parser.is_valid()) {}
+    if (m_parser.is_valid()) {
+        auto objects = m_parser();
+        qDebug() << "count objects = " << objects.size();
+        m_data->set_objects(std::move(objects));
+    }
 }

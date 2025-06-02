@@ -10,6 +10,7 @@
 #include "../parser/parser.hpp"
 #include "code.hpp"
 #include "highlighter.hpp"
+#include "model.hpp"
 
 class Editor : public QWidget {
     Q_OBJECT
@@ -17,9 +18,10 @@ class Editor : public QWidget {
     void apply();
 
    public:
-    explicit Editor(QWidget* parent = nullptr);
+    explicit Editor(DataModel* data, QWidget* parent = nullptr);
 
    private:
+    DataModel* m_data;
     std::shared_ptr<CodeEditor> m_text_edit;
     std::shared_ptr<SyntaxHighlighter> m_highlighter;
     Parser m_parser;
