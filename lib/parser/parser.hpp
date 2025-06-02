@@ -51,7 +51,7 @@ class Parser {
    public:
     void set_text(const std::string& text);
 
-    bool is_valid() const { return m_valid; }
+    bool is_valid() const;
 
     std::vector<std::unique_ptr<hittable>> operator()();
 

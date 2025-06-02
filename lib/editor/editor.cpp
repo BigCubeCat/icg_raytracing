@@ -1,13 +1,15 @@
 #include "editor.hpp"
 #include <qboxlayout.h>
+#include <memory>
 #include "code.hpp"
 
 Editor::Editor(QWidget* parent) : QWidget(parent) {
     m_text_edit = std::make_shared<CodeEditor>(this);
     m_highlighter =
         std::make_shared<SyntaxHighlighter>(m_text_edit->document());
-    m_layout.addWidget(m_text_edit.get());
-    setLayout(&m_layout);
+    m_layout = std::make_shared<QVBoxLayout>();
+    m_layout->addWidget(m_text_edit.get());
+    setLayout(m_layout.get());
     m_text_edit->setStyleSheet(R"(
         CodeEditor {
             font-family: Consolas;
@@ -27,7 +29,7 @@ void Editor::set_text(const QString& code) {
 }
 
 void Editor::apply() {
-    auto text = m_text_edit->toPlainText().toStdString();
+    std::string text = m_text_edit->toPlainText().toStdString();
     m_parser.set_text(text);
     if (m_parser.is_valid()) {}
 }

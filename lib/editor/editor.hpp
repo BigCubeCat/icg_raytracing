@@ -23,7 +23,7 @@ class Editor : public QWidget {
     std::shared_ptr<CodeEditor> m_text_edit;
     std::shared_ptr<SyntaxHighlighter> m_highlighter;
     Parser m_parser;
-    QVBoxLayout m_layout;
+    std::shared_ptr<QVBoxLayout> m_layout;
 
    public slots:
     void set_text(const QString& code);

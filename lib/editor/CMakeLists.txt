@@ -22,6 +22,7 @@ target_link_libraries(
          Qt6::Quick
          Qt6::QuickWidgets
          Qt6::QuickControls2
+         parser
          model)
 
 target_include_directories(editor PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

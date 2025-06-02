@@ -9,6 +9,10 @@ void Parser::set_text(const std::string& text) {
     m_valid = validate(stream);
 }
 
+bool Parser::is_valid() const {
+    return m_valid;
+}
+
 std::vector<std::unique_ptr<HittableIface<float>>> Parser::operator()() {
     if (!m_valid) {
         return {};
