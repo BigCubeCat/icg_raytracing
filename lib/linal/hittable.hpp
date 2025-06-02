@@ -1,10 +1,11 @@
 #pragma once
 
+#include "hit_record.hpp"
+#include "ray.hpp"
+
 /*!
  * \brief Интерфейс объекта, обнаружеваемого лучем
 */
-#include "hit_record.hpp"
-#include "ray.hpp"
 template <typename T>
 class HittableIface {
    public:

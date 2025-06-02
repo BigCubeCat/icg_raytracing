@@ -1,6 +1,6 @@
 // shading.hpp
 #pragma once
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 #include "hit_record.hpp"
 #include "light.hpp"
 #include "ray.hpp"

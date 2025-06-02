@@ -2,6 +2,7 @@
 #include <qmessagebox.h>
 #include <qscrollarea.h>
 
+#include "canvaspanel.hpp"
 #include "ui_mainwindow.h"
 
 #include <QLabel>
@@ -26,6 +27,8 @@ MainWindow::MainWindow(QWidget* parent)
 }
 
 void MainWindow::connectSlots() {
+    connect(&m_editor, &Editor::new_objects, &m_canvas_panel,
+            &CanvasPanel::update_objects);
     connect(m_ui->actionOpen, &QAction::triggered, this, &MainWindow::open);
     connect(m_ui->actionSave, &QAction::triggered, this, &MainWindow::save);
     connect(m_ui->actionSaveAs, &QAction::triggered, this,

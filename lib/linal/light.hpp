@@ -1,6 +1,6 @@
 // light.hpp
 #pragma once
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 
 struct PointLight {
     Eigen::Vector3f position;

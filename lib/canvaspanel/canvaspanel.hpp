@@ -22,4 +22,6 @@ class CanvasPanel : public QWidget {
 
    private slots:
     void toggle();
+   public slots:
+    void update_objects();
 };

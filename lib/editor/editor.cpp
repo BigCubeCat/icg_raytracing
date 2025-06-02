@@ -38,5 +38,6 @@ void Editor::apply() {
         auto objects = m_parser();
         qDebug() << "count objects = " << objects.size();
         m_data->set_objects(std::move(objects));
+        emit new_objects();
     }
 }

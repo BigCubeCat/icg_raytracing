@@ -4,6 +4,7 @@
 #include <qgraphicsitem.h>
 #include <qgraphicsscene.h>
 #include <qpushbutton.h>
+#include <qtmetamacros.h>
 #include <QActionGroup>
 #include <QPlainTextEdit>
 #include <QWidget>
@@ -29,4 +30,6 @@ class Editor : public QWidget {
 
    public slots:
     void set_text(const QString& code);
+   signals:
+    void new_objects();
 };

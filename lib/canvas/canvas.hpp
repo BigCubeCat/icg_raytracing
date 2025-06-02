@@ -1,65 +1,47 @@
 #pragma once
 
-#include <eigen3/Eigen/Dense>
-
 #include <QPainter>
 #include <QWidget>
 #include "model.hpp"
+
+#include "../linal/camera.hpp"
+#include "../linal/light.hpp"
 
 const double kDefaultZn = 1.0;
 
 class Canvas : public QWidget {
     Q_OBJECT
+
+   public:
+    explicit Canvas(DataModel* data, QWidget* parent = nullptr);
+    // Установить сцену (список объектов) и источники света извне
+    void setScene(
+        const std::vector<std::shared_ptr<HittableIface<float>>>& objects,
+        const std::vector<PointLight>& lights);
+
+   protected:
+    // От Qt: при изменении размера виджета
+    void resizeEvent(QResizeEvent* event) override;
+    // От Qt: когда нужно перерисовать
+    void paintEvent(QPaintEvent* event) override;
+    // От Qt: обрабатывать нажатия клавиш, чтобы двигать камеру
+    void keyPressEvent(QKeyEvent* event) override;
+
+    // Слот для изменения позиции камеры / ориентации
    public slots:
-    void pallete_changed(const QColor& a, const QColor& b);
+    void moveCameraForward() {}
+    void moveCameraBackward() {}
+    void moveCameraLeft() {}
+    void moveCameraRight() {}
+    void rotateCamera(float yaw_delta, float pitch_delta) {}
 
    private:
     DataModel* m_data;
+    Camera<float> m_camera;
+    std::vector<std::shared_ptr<HittableIface<float>>> m_scene_objects;
+    std::vector<PointLight> m_lights;
+    QImage m_image;  // сюда рендерим
+    bool m_need_render = true;
 
-    // Положение камеры
-    Eigen::Vector3d m_point_cam;
-    // Точка, на которую смотрим
-    Eigen::Vector3d m_point_view;
-    // Вектор “вверх”
-    Eigen::Vector3d m_vec_up;
-
-    // Параметры пирамиды видимости
-    double m_zn = kDefaultZn;  // ближняя плоскость
-    double m_zf = 10.0;        // дальняя плоскость
-    double m_sw = 2.0;         // ширина ближней плоскости
-    double m_sh = 2.0;         // высота ближней плоскости
-
-    QColor m_far_color = Qt::red;
-    QColor m_near_color = Qt::blue;
-
-    bool m_is_draging = false;
-    QPoint m_begin_point;
-    double m_rotation_x = 0.0;  // угол поворота вокруг X
-    double m_rotation_y = 0.0;  // угол поворота вокруг Y
-
-    Eigen::Matrix4d m_view;
-    Eigen::Matrix4d m_proj;
-    Eigen::Matrix4d m_rot;
-
-    bool m_ctrl = false;
-
-    void normalize();
-
-    void draw_axes(QPainter& painter);
-
-   public:
-    explicit Canvas(QWidget* parent = nullptr, DataModel* model = nullptr);
-
-    void paintEvent(QPaintEvent* event) override;
-
-    void update_from_data();
-
-   protected:
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
-    void mouseDoubleClickEvent(QMouseEvent* event) override;
-    void wheelEvent(QWheelEvent* event) override;
-    void keyPressEvent(QKeyEvent* event) override;
-    void keyReleaseEvent(QKeyEvent* event) override;
+    void renderScene();  // основной метод трассировки
 };

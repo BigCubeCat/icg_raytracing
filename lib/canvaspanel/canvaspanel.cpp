@@ -10,7 +10,7 @@
 
 CanvasPanel::CanvasPanel(QWidget* parent, DataModel* model)
     : QWidget(parent),
-      m_canvas(this, model),
+      m_canvas(model, this),
       m_data(model),
       m_ui(new Ui::CanvasPanel) {
     m_ui->setupUi(this);
@@ -31,4 +31,8 @@ void CanvasPanel::toggle() {
     } else {
         m_ui->toggleModeButton->setText(tr("render"));
     }
+}
+
+void CanvasPanel::update_objects() {
+    m_canvas.setScene(m_data->objects(), {});
 }
