@@ -7,10 +7,7 @@ qt_add_library(
   model.hpp
   model.cpp)
 
-target_link_libraries(
-  model
-  PUBLIC Qt6::Core Qt6::Widgets Qt6::Gui
-  PRIVATE splinelib)
+target_link_libraries(model PUBLIC Qt6::Core Qt6::Widgets Qt6::Gui)
 
 target_include_directories(model PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
                                         ${OpenCV_INCLUDE_DIRS})

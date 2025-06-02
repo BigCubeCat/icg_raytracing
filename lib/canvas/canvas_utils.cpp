@@ -53,26 +53,26 @@ void make_rotation_matrix(Eigen::Matrix4d& dest, double x, double y) {
     rot_y(2, 2) = cos(angle_y);
     dest = rot_y * rot_x;
 }
-
-QPointF project_point(const Point3D& v, const Eigen::Matrix4d& func,
-                      const Eigen::Matrix4d& proj, int width, int height,
-                      double& depth) {
-    // Переводим в гомогенные координаты
-    Eigen::Vector4d vh(v.x(), v.y(), v.z(), 1.0);
-
-    // В camera-space, затем в clip-space
-    Eigen::Vector4d v_cam = func * vh;
-    depth = -v_cam.z();
-    Eigen::Vector4d clip = proj * v_cam;
-
-    // Перевод в NDC (Normalized Device Coordinates)
-    clip /= clip.w();
-
-    float x_ndc = clip.x();  // в [-1,1]
-    float y_ndc = clip.y();  // в [-1,1]
-
-    // В экранные: x->[0,W], y->[0,H] (инвертируем y)
-    float x_screen = (x_ndc + 1.0) * 0.5 * width;
-    float y_screen = (1.0 - y_ndc) * 0.5 * height;
-    return QPointF(x_screen, y_screen);
-}
+//
+// QPointF project_point(const Point3D& v, const Eigen::Matrix4d& func,
+//                       const Eigen::Matrix4d& proj, int width, int height,
+//                       double& depth) {
+//     // Переводим в гомогенные координаты
+//     Eigen::Vector4d vh(v.x(), v.y(), v.z(), 1.0);
+//
+//     // В camera-space, затем в clip-space
+//     Eigen::Vector4d v_cam = func * vh;
+//     depth = -v_cam.z();
+//     Eigen::Vector4d clip = proj * v_cam;
+//
+//     // Перевод в NDC (Normalized Device Coordinates)
+//     clip /= clip.w();
+//
+//     float x_ndc = clip.x();  // в [-1,1]
+//     float y_ndc = clip.y();  // в [-1,1]
+//
+//     // В экранные: x->[0,W], y->[0,H] (инвертируем y)
+//     float x_screen = (x_ndc + 1.0) * 0.5 * width;
+//     float y_screen = (1.0 - y_ndc) * 0.5 * height;
+//     return QPointF(x_screen, y_screen);
+// }

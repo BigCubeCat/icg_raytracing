@@ -18,4 +18,16 @@ Editor::Editor(QWidget* parent) : QWidget(parent) {
             width: 12px;
         }
     )");
+    connect(m_text_edit.get(), &QPlainTextEdit::textChanged, this,
+            &Editor::apply);
+}
+
+void Editor::set_text(const QString& code) {
+    m_text_edit->setPlainText(code);
+}
+
+void Editor::apply() {
+    auto text = m_text_edit->toPlainText().toStdString();
+    m_parser.set_text(text);
+    if (m_parser.is_valid()) {}
 }

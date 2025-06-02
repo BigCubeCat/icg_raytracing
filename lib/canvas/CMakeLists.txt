@@ -10,7 +10,6 @@ target_link_libraries(
          Qt6::Quick
          Qt6::QuickWidgets
          Qt6::QuickControls2
-         model
-         splinelib)
+         model)
 
 target_include_directories(canvas PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -90,9 +90,4 @@ void CodeEditor::highlightCurrentLine() {
 
 void CodeEditor::keyPressEvent(QKeyEvent* event) {
     QPlainTextEdit::keyPressEvent(event);
-    // Автоматическое выравнивание текста при нажатии Enter
-    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-        QTextCursor cursor = textCursor();
-        // cursor.insertText("    ");  // Добавляем 4 пробела
-    }
 }

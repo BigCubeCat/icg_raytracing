@@ -56,7 +56,6 @@ target_link_libraries(
           Qt6::Quick
           Qt6::QuickWidgets
           Qt6::QuickControls2
-          splinelib
           model
           mainwindow)
 
@@ -78,6 +77,7 @@ install(SCRIPT ${deploy_script})
 add_subdirectory(lib/editor)
 add_subdirectory(lib/model)
 add_subdirectory(lib/mainwindow)
-add_subdirectory(lib/spline)
 add_subdirectory(lib/canvas)
 add_subdirectory(lib/canvaspanel)
+add_subdirectory(lib/linal)
+add_subdirectory(lib/parser)

@@ -1,10 +1,8 @@
 #pragma once
 
-#include <Eigen/Dense>
 #include <QColor>
 #include <QPoint>
-
-#include "../spline/point.hpp"
+#include <eigen3/Eigen/Dense>
 
 QColor interpolate_color(const QColor& near, const QColor& far, double t,
                          double min, double max);
@@ -17,6 +15,6 @@ void make_projection_matrix(Eigen::Matrix4d& dest, double zn, double zf,
 
 void make_rotation_matrix(Eigen::Matrix4d& dest, double x, double y);
 
-QPointF project_point(const Point3D& v, const Eigen::Matrix4d& func,
-                      const Eigen::Matrix4d& proj, int width, int height,
-                      double& depth);
+// QPointF project_point(const Point3D& v, const Eigen::Matrix4d& func,
+//                       const Eigen::Matrix4d& proj, int width, int height,
+//                       double& depth);

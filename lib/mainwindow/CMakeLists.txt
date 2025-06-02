@@ -13,7 +13,6 @@ target_link_libraries(
          model
          editor
          canvas
-         canvaspanel
-         splinelib)
+         canvaspanel)
 
 target_include_directories(mainwindow PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

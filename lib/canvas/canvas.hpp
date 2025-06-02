@@ -4,7 +4,6 @@
 
 #include <QPainter>
 #include <QWidget>
-#include "Eigen/src/Core/Matrix.h"
 #include "model.hpp"
 
 const double kDefaultZn = 1.0;

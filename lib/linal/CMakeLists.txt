@@ -9,5 +9,8 @@ add_library(
   ray.hpp
   sphere.hpp
   triangle.hpp)
-target_link_libraries(linal PRIVATE m)
+
+find_package(Eigen3 REQUIRED)
+include_directories(${EIGEN3_INCLUDE_DIR})
+target_link_libraries(linal PRIVATE m Eigen3::Eigen)
 target_include_directories(linal PUBLIC ${EIGEN3_INCLUDE_DIR})
