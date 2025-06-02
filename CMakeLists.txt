@@ -7,6 +7,19 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
+# Настройки Boost
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+
+find_package(Boost 1.88 REQUIRED)
+if(Boost_FOUND)
+  message(STATUS "Boost version: ${Boost_VERSION}")
+  message(STATUS "Boost includes: ${Boost_INCLUDE_DIRS}")
+  message(STATUS "Boost libraries: ${Boost_LIBRARY_DIRS}")
+else()
+  message(FATAL_ERROR "Boost not found!")
+endif()
+
 find_package(Eigen3 REQUIRED)
 find_package(
   Qt6 6.5 REQUIRED
@@ -47,6 +60,10 @@ target_link_libraries(
           model
           mainwindow)
 
+target_include_directories(icg_raytracing PRIVATE ${Boost_INCLUDE_DIRS})
+
+target_compile_definitions(icg_raytracing PRIVATE BOOST_SPIRIT_THREADSAFE)
+
 include(GNUInstallDirs)
 
 install(
@@ -58,7 +75,6 @@ install(
 qt_generate_deploy_app_script(TARGET icg_raytracing OUTPUT_SCRIPT deploy_script
                               NO_UNSUPPORTED_PLATFORM_ERROR)
 install(SCRIPT ${deploy_script})
-
 add_subdirectory(lib/editor)
 add_subdirectory(lib/model)
 add_subdirectory(lib/mainwindow)

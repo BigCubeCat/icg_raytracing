@@ -102,7 +102,7 @@ void MainWindow::show_help() {
     content_label.setWordWrap(true);
     content_label.setText(content);
 
-    QScrollArea* scroll_area = new QScrollArea(&dialog);
+    auto* scroll_area = new QScrollArea(&dialog);
     scroll_area->setWidget(&content_label);
     scroll_area->setWidgetResizable(true);
     QVBoxLayout layout(&dialog);

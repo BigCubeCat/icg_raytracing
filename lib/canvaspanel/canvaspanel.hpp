@@ -1,9 +1,6 @@
 #pragma once
 #include <QWidget>
-#include <optional>
 #include "canvas.hpp"
-
-#include "gradient.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,17 +13,13 @@ class CanvasPanel : public QWidget {
    private:
     Canvas m_canvas;
     DataModel* m_data;
-    Grad m_gradient;
     Ui::CanvasPanel* m_ui;
-
-    std::optional<QColor> ask_color(const QColor& old);
+    bool m_render_mode = false;
 
    public:
     explicit CanvasPanel(QWidget* parent, DataModel* model);
     ~CanvasPanel() override;
 
    private slots:
-    void on_top_clicked();
-    void on_bottom_clicked();
-    void on_load();
+    void toggle();
 };
