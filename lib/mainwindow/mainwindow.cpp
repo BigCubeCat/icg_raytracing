@@ -1,5 +1,6 @@
 #include "mainwindow.hpp"
 #include <qmessagebox.h>
+#include <qplaintextedit.h>
 #include <qscrollarea.h>
 
 #include "canvaspanel.hpp"
@@ -10,7 +11,7 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
-      m_editor(&m_model, nullptr),
+      m_editor(&m_model, &m_parser, nullptr),
       m_canvas_panel(nullptr, &m_model),
       m_fp(&m_model),
       m_ui(new Ui::MainWindow) {
@@ -22,8 +23,13 @@ MainWindow::MainWindow(QWidget* parent)
 
     m_ui->toolBar->addActions(m_ui->menuFile->actions());
 
+    m_ui->tab_3->setLayout(m_ui->tab_3_layout);
+
     connectSlots();
-    open_file();
+    m_ui->sceneEditor->setPlainText(
+        QString("32 32 42\n1\n10 10 10 255 255 0\n"));
+    m_ui->lightsEditor->setPlainText(QString(
+        "128 255 128\n0.2\n0.1\nfine\n-10 -10 -10\n0 0 0\n0 100\n600 400\n"));
 }
 
 void MainWindow::connectSlots() {
@@ -37,6 +43,21 @@ void MainWindow::connectSlots() {
             &MainWindow::show_about);
     connect(m_ui->actionHelp, &QAction::triggered, this,
             &MainWindow::show_help);
+
+    connect(m_ui->lightsEditor, &QPlainTextEdit::textChanged, this,
+            &MainWindow::light_changed);
+    connect(m_ui->sceneEditor, &QPlainTextEdit::textChanged, this,
+            &MainWindow::header_changed);
+}
+
+void MainWindow::header_changed() {
+    auto text = m_ui->sceneEditor->toPlainText();
+    //     m_parser.set_header(text.toStdString());
+}
+
+void MainWindow::light_changed() {
+    auto text = m_ui->lightsEditor->toPlainText();
+    m_parser.set_scene(text.toStdString());
 }
 
 void MainWindow::open() {
@@ -55,9 +76,7 @@ MainWindow::~MainWindow() {
     delete m_ui;
 }
 
-void MainWindow::open_file() {
-    m_fp.read_file("assets/default.bin");
-}
+void MainWindow::open_file() {}
 
 void MainWindow::show_about() {
     static QString license_text =
@@ -85,7 +104,8 @@ void MainWindow::show_help() {
     static QString content =
         "<div style='{display: 'flex'; flex-direction: 'column', "
         "align-content: 'center'}'><h3>Usage</h3>"
-        "<h1>Drag to move node; Left click to add node; Right click to delete "
+        "<h1>Drag to move node; Left click to add node; Right click to "
+        "delete "
         "node</h1>"
         "<img src='assets/screens/1.png' width='900'/>"
         "<h1>Setup figure config</h1>"

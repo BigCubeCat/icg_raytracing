@@ -19,13 +19,13 @@ class Editor : public QWidget {
     void apply();
 
    public:
-    explicit Editor(DataModel* data, QWidget* parent = nullptr);
+    explicit Editor(DataModel* data, Parser* parser, QWidget* parent = nullptr);
 
    private:
     DataModel* m_data;
+    Parser* m_parser;
     std::shared_ptr<CodeEditor> m_text_edit;
     std::shared_ptr<SyntaxHighlighter> m_highlighter;
-    Parser m_parser;
     std::shared_ptr<QVBoxLayout> m_layout;
 
    public slots:

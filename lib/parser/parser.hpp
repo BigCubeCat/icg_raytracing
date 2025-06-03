@@ -53,6 +53,7 @@ class Parser {
     bool m_valid;
 
    public:
+    Parser() { m_config = std::make_shared<SceneConfig>(); }
     void set_objects_text(const std::string& text);
     void set_header(const std::string& text);
     void set_scene(const std::string& text);

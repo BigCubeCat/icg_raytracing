@@ -1,5 +1,6 @@
 #include "parser.hpp"
 #include <qcolor.h>
+#include <QDebug>
 #include <boost/variant/detail/apply_visitor_binary.hpp>
 #include <istream>
 #include <sstream>
@@ -38,23 +39,31 @@ void Parser::set_header(const std::string& text) {
 
 void Parser::set_scene(const std::string& text) {
     m_scene = text;
-    std::istringstream stream(m_scene);
+    std::stringstream stream(m_scene);
     int br;
     int bg;
     int bb;
     stream >> br >> bg >> bb;
+    qDebug() << br << " " << bg << " " << bb;
     m_config->m_background_color = QColor(br, bg, bb);
+    qDebug() << m_config->m_background_color;
 
     stream >> m_config->m_gamma;
+    qDebug() << m_config->m_gamma;
     stream >> m_config->m_depth;
+    qDebug() << m_config->m_depth;
 
     stream >> m_config->m_camera_position[0] >>
         m_config->m_camera_position[1] >> m_config->m_camera_position[2];
+    qDebug() << m_config->m_camera_position[0];
     stream >> m_config->m_view_point[0] >> m_config->m_view_point[1] >>
         m_config->m_view_point[2];
+    qDebug() << m_config->m_view_point[0];
     stream >> m_config->m_up_vector[0] >> m_config->m_up_vector[1] >>
         m_config->m_up_vector[2];
+    qDebug() << m_config->m_up_vector[0];
     stream >> m_config->m_zn >> m_config->m_zf;
+    qDebug() << m_config->m_zn << " " << m_config->m_zf;
     stream >> m_config->m_sw >> m_config->m_sh;
 }
 

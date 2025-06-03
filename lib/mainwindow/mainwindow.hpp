@@ -25,8 +25,10 @@ class MainWindow : public QMainWindow {
     void open_file();
 
     void show_about();
-
     void show_help();
+
+    void light_changed();
+    void header_changed();
 
    public:
     explicit MainWindow(QWidget* parent);
@@ -35,6 +37,7 @@ class MainWindow : public QMainWindow {
    private:
     DataModel m_model;
     Editor m_editor;
+    Parser m_parser;
     CanvasPanel m_canvas_panel;
     FileProcessor m_fp;
     Ui::MainWindow* m_ui;

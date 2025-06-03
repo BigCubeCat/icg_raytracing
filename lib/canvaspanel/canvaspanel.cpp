@@ -33,6 +33,4 @@ void CanvasPanel::toggle() {
     }
 }
 
-void CanvasPanel::update_objects() {
-    m_canvas.setScene(std::move(m_data->objects()), {});
-}
+void CanvasPanel::update_objects() {}
