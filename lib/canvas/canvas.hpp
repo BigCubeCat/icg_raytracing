@@ -15,9 +15,8 @@ class Canvas : public QWidget {
    public:
     explicit Canvas(DataModel* data, QWidget* parent = nullptr);
     // Установить сцену (список объектов) и источники света извне
-    void setScene(
-        const std::vector<std::shared_ptr<HittableIface<float>>>& objects,
-        const std::vector<PointLight>& lights);
+    void setScene(std::vector<std::shared_ptr<HittableIface<float>>>&& objects,
+                  const std::vector<PointLight>& lights);
 
    protected:
     // От Qt: при изменении размера виджета

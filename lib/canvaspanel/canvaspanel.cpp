@@ -34,5 +34,5 @@ void CanvasPanel::toggle() {
 }
 
 void CanvasPanel::update_objects() {
-    m_canvas.setScene(m_data->objects(), {});
+    m_canvas.setScene(std::move(m_data->objects()), {});
 }

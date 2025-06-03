@@ -49,7 +49,7 @@ class HittableQuad : public HittableIface<T> {
         if (!is_point_inside_quad(point))
             return false;
 
-        rec.t = t;
+        rec.m_t = t;
         rec.m_point = point;
         rec.m_normal = m_normal;
         return true;

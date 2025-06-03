@@ -10,8 +10,8 @@ class HittableSphere : public HittableIface<T> {
     T m_radius;
 
     void process_root(T root, const Ray<T>& ray, HitRecord<T>& rec) const {
-        rec.t = root;
-        rec.m_point = ray.m_origin + ray.m_direction * rec.t;
+        rec.m_t = root;
+        rec.m_point = ray.m_origin + ray.m_direction * rec.m_t;
         rec.m_normal = (rec.m_point - m_center) * (1.0 / m_radius);
     }
 

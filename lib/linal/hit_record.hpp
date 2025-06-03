@@ -7,7 +7,7 @@
 */
 template <typename T>
 struct HitRecord {
-    T t;
+    T m_t;
     Eigen::Vector3<T> m_point;
     Eigen::Vector3<T> m_normal;
 

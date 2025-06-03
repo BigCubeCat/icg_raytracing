@@ -18,7 +18,7 @@ Canvas::Canvas(DataModel* data, QWidget* parent)
 }
 
 void Canvas::setScene(
-    const std::vector<std::shared_ptr<HittableIface<float>>>& objects,
+    std::vector<std::shared_ptr<HittableIface<float>>>&& objects,
     const std::vector<PointLight>& lights_) {
     m_scene_objects = objects;
     m_lights = lights_;
@@ -97,15 +97,21 @@ void Canvas::keyPressEvent(QKeyEvent* event) {
 void Canvas::renderScene() {
     int img_w = m_image.width();
     int img_h = m_image.height();
+    // Преобразуем в [0,255]
+    auto toInt = [](float x) {
+        x = std::clamp(x, 0.0F, 0.999F);
+        return static_cast<int>(256 * x);
+    };
 
 // Для каждого пикселя (x,y) отрисовываем цвет
 #pragma omp parallel for schedule(dynamic)  // если хотим multithread
     for (int j = 0; j < img_h; ++j) {
         for (int i = 0; i < img_w; ++i) {
             // Нормализуем координаты в [0,1]
-            float u = float(i) / float(img_w - 1);
+            float u = static_cast<float>(i) / static_cast<float>(img_w - 1);
             // В Qt y=0 — сверху, но в математике t=0 — снизу, поэтому:
-            float v = 1.0f - float(j) / float(img_h - 1);
+            float v =
+                1.0F - (static_cast<float>(j) / static_cast<float>(img_h - 1));
             Ray<float> r = m_camera.get_ray(u, v);
 
             // 1) Находим ближайший hit: перебираем все объекты, выбирая минимальное t
@@ -115,9 +121,9 @@ void Canvas::renderScene() {
 
             for (const auto& obj : m_scene_objects) {
                 HitRecord<float> temp_rec;
-                if (obj->hit(r, 0.001f, t_closest, temp_rec)) {
+                if (obj->hit(r, 0.001F, t_closest, temp_rec)) {
                     hit_anything = true;
-                    t_closest = temp_rec.t;
+                    t_closest = temp_rec.m_t;
                     closest_rec = temp_rec;
                 }
             }
@@ -128,31 +134,27 @@ void Canvas::renderScene() {
                 // (или можно суммировать по всем)
                 if (!m_lights.empty()) {
                     pixel_color =
-                        phong_shade(closest_rec, r, m_lights[0], 0.1f);
+                        phong_shade(closest_rec, r, m_lights[0], 0.1F);
                 } else {
                     pixel_color = closest_rec.albedo *
-                                  0.1f;  // только ambient, если нет света
+                                  0.1F;  // только ambient, если нет света
                 }
             } else {
                 // Фон (градиент неба, например)
                 Eigen::Vector3f unit_direction = r.m_direction.normalized();
-                float t_bg = 0.5f * (unit_direction.y() + 1.0f);
+                float t_bg = 0.5F * (unit_direction.y() + 1.0F);
                 // линейный градиент от белого внизу до голубого вверху:
                 pixel_color =
-                    (1.0f - t_bg) * Eigen::Vector3f(1.0f, 1.0f, 1.0f) +
-                    t_bg * Eigen::Vector3f(0.5f, 0.7f, 1.0f);
+                    (1.0F - t_bg) * Eigen::Vector3f(1.0F, 1.0F, 1.0F) +
+                    t_bg * Eigen::Vector3f(0.5F, 0.7F, 1.0F);
             }
 
-            // Преобразуем в [0,255]
-            auto toInt = [](float x) {
-                x = std::clamp(x, 0.0F, 0.999F);
-                return static_cast<int>(256 * x);
-            };
             int ir = toInt(pixel_color.x());
             int ig = toInt(pixel_color.y());
             int ib = toInt(pixel_color.z());
 
             // В Qt: setPixel(x, y, QColor::rgb())
+            // TODO: ОПТИМИЗИРОВАТЬ
             m_image.setPixel(i, j, qRgb(ir, ig, ib));
         }
     }

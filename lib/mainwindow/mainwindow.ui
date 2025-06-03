@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ICG Wireframe</string>
+   <string>ICG Raytracing</string>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonStyle::ToolButtonFollowStyle</enum>
@@ -27,7 +27,13 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
+      </property>
+      <property name="tabsClosable">
+       <bool>true</bool>
+      </property>
+      <property name="movable">
+       <bool>true</bool>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="icon">
@@ -46,8 +52,35 @@
         </iconset>
        </attribute>
        <attribute name="title">
-        <string>Spline</string>
+        <string>Objects</string>
        </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="icon">
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/assets/assets/tool_icons_16px/orbit.png</normaloff>:/assets/assets/tool_icons_16px/orbit.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Scene</string>
+       </attribute>
+       <widget class="QWidget" name="horizontalLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>44</y>
+          <width>781</width>
+          <height>471</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPlainTextEdit" name="lightsEditor"/>
+         </item>
+         <item>
+          <widget class="QPlainTextEdit" name="sceneEditor"/>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
     </item>

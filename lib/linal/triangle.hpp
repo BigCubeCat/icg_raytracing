@@ -47,7 +47,7 @@ class HittableTriangle : public HittableIface<T> {
         const T t = f * edge2.dot(q);
 
         if (t > t_min && t < t_max) {
-            rec.t = t;
+            rec.m_t = t;
             rec.m_point = ray.m_origin + ray.m_direction * t;
             rec.m_normal = m_normal;
             return true;

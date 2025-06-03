@@ -1,6 +1,6 @@
 add_library(parser STATIC objects.hpp object_parser.hpp object_parser.cpp
                           parser.hpp parser.cpp)
-target_link_libraries(parser PUBLIC m linal Eigen3::Eigen)
+target_link_libraries(parser PUBLIC m linal scene Eigen3::Eigen)
 
 target_compile_definitions(parser PRIVATE BOOST_SPIRIT_THREADSAFE)
 
